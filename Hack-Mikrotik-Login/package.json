@@ -1,0 +1,16 @@
+{
+  "name": "kmik",
+  "version": "0.0.1",
+  "description": "hack mikrotik LOGIN",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node hck-mikro.js"
+  },
+  "author": "@juve_yescas",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "sync-request": "^4.1.0"
+  }
+}

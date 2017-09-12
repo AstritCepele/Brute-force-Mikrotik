@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test MD5</title>
+	<meta charset="utf-8">
+</head>
+<body>
+    <b>Open console</b>
+	<script type="text/javascript" src="md5.js"></script>
+<script type="text/javascript">
+
+	var start='\075';
+	var end='\162\077\174\275\022\150\314\272\032\201\122\170\154\311\235\102';
+	var password='100';
+		
+	var encrypted = hexMD5(start+password+end);
+  	console.log(encrypted)
+</script>
+</body>
+</html>
