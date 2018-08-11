@@ -74,8 +74,6 @@ Must have installed Nodejs and internet connection.
 
 Clone this repository and in the folder **Hack-Mikrotik-Login**  
 
-Edit the file `conf.json`, changing `http://localjuve.com` on the login page of the hotspot to attack
-
 Edit file `conf.json` change `http://localjuve.com` by the login page of the hotspot to attack (example `http://hotspotmikrotik.com`)
 
 Execute this command.
@@ -85,7 +83,7 @@ $ npm install
 $ npm start
 ```
 
-> The `data.js` file contains the list of possible users and passwords.
+> The `data.js` file contains the list of possible users and passwords, can generate more users and passwords using `Tools/ dig-Generate-File.py`
 
 ## License [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FJuvenal-yescas%2FBrute-force-Mikrotik.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FJuvenal-yescas%2FBrute-force-Mikrotik?ref=badge_shield)
 
